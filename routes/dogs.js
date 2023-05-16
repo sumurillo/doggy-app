@@ -43,13 +43,23 @@ router.get('/:id', async (req, res) => {
 })
 
 // PUT one dog (UPDATE)
-router.put('/:id', (req, res) => {
-  res.send('This is the PUT route for one dog')
+router.put('/:id', async (req, res) => {
+  try {
+    let updatedDog = await Dog.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name }}, {new: true});
+    res.json(updatedDog)
+  } catch {
+    res.json({ msg: 'there was an error with updating your dog'})
+  }
 })
 
 // DELETE one dog
-router.delete('/:id', (req, res) => {
-  res.send('This is the DELETE route for one dog')
+router.delete('/:id', async (req, res) => {
+  try {
+    await Dog.findByIdAndDelete(req.params.id);
+    res.json({ msg: 'Your dog has been successfully adopted'});
+  } catch {
+    res.json({ msg: 'there was an error deleting your dog'})
+  }
 })
 
 module.exports = router
