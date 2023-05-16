@@ -1,5 +1,15 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Dog = require('../models/dog')
+
+async function main() {
+  await mongoose.connect('sumireohana:StNh3PoGdeOrcT8V@cluster0.q2hez7m.mongodb.net/doggy-app?retryWrites=true&w=majority');
+  console.log('Connected to the MongoDB Atlas');
+}
+
+
+main().catch(err => console.log(err));
 
 // GET all dogs
 router.get('/', (req, res) => {
@@ -7,8 +17,13 @@ router.get('/', (req, res) => {
 })
 
 // POST create a dog
-router.post('/', (req, res) => {
-  res.send('This is the POST route for dogs')
+router.post('/', async (req, res) => {
+  try {
+    let newDog = await new Dog(req.body)
+    res.json(newDog)
+  } catch {
+    res.json({ msg: 'there was an error'})
+  }
 })
 
 // GET one dog (SHOW)
