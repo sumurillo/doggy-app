@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Dog = require('../models/dog')
 
 async function main() {
-  await mongoose.connect('sumireohana:StNh3PoGdeOrcT8V@cluster0.q2hez7m.mongodb.net/doggy-app?retryWrites=true&w=majority');
+  await mongoose.connect('mongodb+srv://sumireohana:StNh3PoGdeOrcT8V@cluster0.q2hez7m.mongodb.net/doggy-app?retryWrites=true&w=majority');
   console.log('Connected to the MongoDB Atlas');
 }
 
@@ -12,14 +12,20 @@ async function main() {
 main().catch(err => console.log(err));
 
 // GET all dogs
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  try {
+    let allDogs = await Dog.find({});
+    res.json(allDogs)
+  } catch {
+    res.json({ msg: 'there was a problem getting all the dogs' });
+  }
   res.send('Hello World!')
-})
+});
 
 // POST create a dog
 router.post('/', async (req, res) => {
   try {
-    let newDog = await new Dog(req.body)
+    let newDog = await Dog.create(req.body)
     res.json(newDog)
   } catch {
     res.json({ msg: 'there was an error'})
@@ -27,8 +33,13 @@ router.post('/', async (req, res) => {
 })
 
 // GET one dog (SHOW)
-router.get('/:id', (req, res) => {
-  res.send('This is the GET route for one dog')
+router.get('/:id', async (req, res) => {
+  try {
+    let dog = await Dog.findById(req.params.id)
+    res.json(dog)
+  } catch {
+    res.json({ msg: 'there was an error getting your dog'})
+  }
 })
 
 // PUT one dog (UPDATE)
