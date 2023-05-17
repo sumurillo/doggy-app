@@ -14,7 +14,7 @@ const createDog = async (req, res) => {
         let newDog = await Dog.create(req.body)
         res.json(newDog)
     } catch {
-        res.json({ msg: 'there was an error'})
+        res.json({ msg: 'there was an error creating a dog'})
     }
 }
 
