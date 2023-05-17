@@ -3,6 +3,10 @@ const app = express()
 const port = 3000
 const dogsRouter = require('./routes/dogs')
 
+//envrionment variables
+require('dotenv').
+require('./config/database').config()
+
 // middleware
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,15 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Dog = require('../models/dog')
 
-async function main() {
-  await mongoose.connect('mongodb+srv://sumireohana:StNh3PoGdeOrcT8V@cluster0.q2hez7m.mongodb.net/doggy-app?retryWrites=true&w=majority');
-  console.log('Connected to the MongoDB Atlas');
-}
-
-
-main().catch(err => console.log(err));
 
 // GET all dogs
 router.get('/', async (req, res) => {
